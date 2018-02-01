@@ -1,0 +1,23 @@
+{
+  "name": "@buxlabs/ejs-parser",
+  "version": "1.0.0",
+  "description": "ejs parser",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buxlabs/ejs-parser.git"
+  },
+  "keywords": [
+    "ejs",
+    "parser"
+  ],
+  "author": "Emil Ajdyna <emil@ajdyna.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/buxlabs/ejs-parser/issues"
+  },
+  "homepage": "https://github.com/buxlabs/ejs-parser#readme"
+}
