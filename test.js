@@ -9,7 +9,8 @@ assert.deepEqual(lexer('(12 + 4) / 6'), [
   ["number", 4],
   ["operator", ")"],
   ["operator", "/"],
-  ["number", 6]
+  ["number", 6],
+  ['(end)']
 ])
 
 assert.deepEqual(parser('12 / 4 + 6'), {

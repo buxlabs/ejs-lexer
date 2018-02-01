@@ -22,7 +22,11 @@ function lexer (input) {
     return character
   }
   function tokenize (type, value) {
-    tokens.push([ type, value ])
+    if (!value) {
+      tokens.push([ type ])
+    } else {
+      tokens.push([ type, value ])
+    }
   }
   while (index < length) {
     character = input[index]
@@ -56,6 +60,7 @@ function lexer (input) {
       throw "Unrecognized token."
     }
   }
+  tokenize('(end)')
   return tokens
 }
 
