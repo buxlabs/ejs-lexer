@@ -1,67 +1,41 @@
-function isOperator (character) {
-  return /[+\-*\/\^%=(),]/.test(character)
-}
+var isOperator = function (c) { return /[+\-*\/\^%=(),]/.test(c); },
+    isDigit = function (c) { return /[0-9]/.test(c); },
+    isWhiteSpace = function (c) { return /\s/.test(c); },
+    isIdentifier = function (c) { return typeof c === "string" && !isOperator(c) && !isDigit(c) && !isWhiteSpace(c); };
 
-function isDigit (character) {
-  return /[0-9]/.test(character)
-}
+var lex = function (input) {
 
-function isWhiteSpace (character) {
-  return /\s/.test(character)
-}
-
-function isIdentifier (character) {
-  return typeof character === "string" && !isOperator(character) && !isDigit(character) && !isWhiteSpace(character)
-}
-
-function lexer (input) {
-  var tokens = [], index = 0, length = input.length, character
-  function next () {
-    index += 1
-    character = input[index]
-    return character
-  }
-  function tokenize (type, value) {
-    if (!value) {
-      tokens.push([ type ])
-    } else {
-      tokens.push([ type, value ])
+    var tokens = [], c, i = 0;
+    var next = function () { return c = input[++i]; };
+    var addToken = function (type, value) {
+        tokens.push({ type, value });
+    };
+    while (i < input.length) {
+        c = input[i];
+        if (isWhiteSpace(c)) next();
+        else if (isOperator(c)) {
+            addToken(c);
+            next();
+        }
+        else if (isDigit(c)) {
+            var num = c;
+            while (isDigit(next())) num += c;
+            if (c === ".") {
+                do num += c; while (isDigit(next()));
+            }
+            num = parseFloat(num);
+            if (!isFinite(num)) throw "Number is too large or too small for a 64-bit double.";
+            addToken("number", num);
+        }
+        else if (isIdentifier(c)) {
+            var idn = c;
+            while (isIdentifier(next())) idn += c;
+            addToken("identifier", idn);
+        }
+        else throw "Unrecognized token.";
     }
-  }
-  while (index < length) {
-    character = input[index]
-    if (isWhiteSpace(character)) {
-      next()
-    } else if (isOperator(character)) {
-      tokenize("operator", character)
-      next()
-    } else if (isDigit(character)) {
-      let number = character
-      while (isDigit(next())) {
-        number += character
-      }
-      if (character === '.') {
-        do {
-          number += character
-        } while (isDigit(next()))
-      }
-      number = parseFloat(number)
-      if (!isFinite(number)) {
-        throw "Number is too large or too small for a 64-bit double."
-      }
-      tokenize("number", number)
-    } else if (isIdentifier(character)) {
-      let identifier = character
-      while (isIdentifier(next())) {
-        identifier += character
-      }
-      tokenize("identifier", identifier)
-    } else {
-      throw "Unrecognized token."
-    }
-  }
-  tokenize('(end)')
-  return tokens
-}
+    addToken("(end)");
+    return tokens;
+};
 
-module.exports = lexer
+module.exports = lex;
