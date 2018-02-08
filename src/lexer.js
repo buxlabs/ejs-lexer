@@ -1,73 +1,52 @@
-function isWhiteSpace (character) {
-  return /\s/.test(character)
-}
-
-function isStartTagCharacter (character) {
-  return character === '<'
-}
-
-function isEndTagCharacter (character) {
-  return character === '>'
-}
-
-function isEmbeddedTemplateCharacter (character) {
-  return character === '%'
-}
-
-function isEscapeCharacter (character) {
-  return character === '-'
-}
-
-function isInterpolateCharacter (character) {
-  return character === '='
-}
+const START_TAG = '<'
+const END_TAG = '>'
+const EMBEDDED_TEMPLATE = '%'
+const ESCAPE = '-'
+const INTERPOLATE = '='
 
 module.exports = function (input) {
   const tokens = []
   const length = input.length
   let index = 0
-  let character
+  let character = input[0]
   function next () {
     index += 1
     character = input[index]
     return character
   }
-  function addToken (type, value) {
-    tokens.push({ type, value })
+  function current (sign) {
+    return character === sign
   }
+  function push (type, value) {
+    if (value) tokens.push({ type, value })
+  }
+  let type = 'string'
+  let value = ''
   while (index < length) {
-    character = input[index]
-    if (isWhiteSpace(character)) {
+    if (character === START_TAG && input[index + 1] === EMBEDDED_TEMPLATE) {
       next()
-    } else if (isStartTagCharacter(character)) {
       next()
-      if (isEmbeddedTemplateCharacter(character)) {
-        next()
-        let type = 'evaluate'
-        if (isEscapeCharacter(character)) {
-          type = 'escape'
-          next()
-        } else if (isInterpolateCharacter(character)) {
-          type = 'interpolate'
-          next()
-        }
-        let value = ''
-        while (!isEmbeddedTemplateCharacter(next()) && character !== void 0) {
-          value += character
-        }
-        next()
-        if (isEndTagCharacter(character)) {
-          addToken(type, value.trim())
-          next()
-        }
+      push('string', value)
+      value = ''
+      if (character === ESCAPE) {
+        type = 'escape'
+      } else if (character === INTERPOLATE) {
+        type = 'interpolate'
       } else {
-        let value = '<' + character
-        while (!isStartTagCharacter(next()) && character !== void 0) {
-          value += character
-        }
-        addToken('string', value)
+        type = 'evaluate'
       }
+      next()
+    } else if (character === EMBEDDED_TEMPLATE && input[index + 1] === END_TAG) {
+      next()
+      next()
+      push(type, value.trim())
+      value = ''
+      type = 'string'
+    } else {
+      value += character
+      next()
     }
   }
+  push(type, value)
   return tokens
 }
