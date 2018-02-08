@@ -9,15 +9,39 @@ assert.deepEqual(lexer('<div></div>'), [
   { type: 'string', value: '<div></div>' }
 ])
 
-assert.deepEqual(lexer('<% console.log("hello") %>'), [
-  { type: 'evaluate', value: 'console.log("hello")' }
+assert.deepEqual(lexer('<% console.log(foo) %>'), [
+  { type: 'evaluate', value: 'console.log(foo)' }
+])
+
+assert.deepEqual(lexer('<%console.log(foo)%>'), [
+  { type: 'evaluate', value: 'console.log(foo)' }
+])
+
+assert.deepEqual(lexer('<%   console.log(foo)   %>'), [
+  { type: 'evaluate', value: 'console.log(foo)' }
 ])
 
 assert.deepEqual(lexer('<%- foo %>'), [
   { type: 'escape', value: 'foo' }
 ])
 
+assert.deepEqual(lexer('<%-foo%>'), [
+  { type: 'escape', value: 'foo' }
+])
+
+assert.deepEqual(lexer('<%-    foo     %>'), [
+  { type: 'escape', value: 'foo' }
+])
+
 assert.deepEqual(lexer('<%= bar %>'), [
+  { type: 'interpolate', value: 'bar' }
+])
+
+assert.deepEqual(lexer('<%=bar%>'), [
+  { type: 'interpolate', value: 'bar' }
+])
+
+assert.deepEqual(lexer('<%=     bar     %>'), [
   { type: 'interpolate', value: 'bar' }
 ])
 

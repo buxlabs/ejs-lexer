@@ -9,13 +9,16 @@ module.exports = function (input) {
   const length = input.length
   let index = 0
   let character = input[0]
-  function next () {
+  function advance () {
     index += 1
     character = input[index]
     return character
   }
-  function current (sign) {
-    return character === sign
+  function current (tag) {
+    return character === tag
+  }
+  function next (tag) {
+    return input[index + 1] === tag
   }
   function push (type, value) {
     if (value) tokens.push({ type, value })
@@ -23,28 +26,29 @@ module.exports = function (input) {
   let type = 'string'
   let value = ''
   while (index < length) {
-    if (character === START_TAG && input[index + 1] === EMBEDDED_TEMPLATE) {
-      next()
-      next()
+    if (current(START_TAG) && next(EMBEDDED_TEMPLATE)) {
       push('string', value)
+      advance()
+      advance()
       value = ''
-      if (character === ESCAPE) {
+      if (current(ESCAPE)) {
         type = 'escape'
-      } else if (character === INTERPOLATE) {
+        advance()
+      } else if (current(INTERPOLATE)) {
         type = 'interpolate'
+        advance()
       } else {
         type = 'evaluate'
       }
-      next()
-    } else if (character === EMBEDDED_TEMPLATE && input[index + 1] === END_TAG) {
-      next()
-      next()
+    } else if (current(EMBEDDED_TEMPLATE) && next(END_TAG)) {
       push(type, value.trim())
+      advance()
+      advance()
       value = ''
       type = 'string'
     } else {
       value += character
-      next()
+      advance()
     }
   }
   push(type, value)
