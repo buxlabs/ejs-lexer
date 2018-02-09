@@ -1,23 +1,23 @@
 {
-  "name": "@buxlabs/ejs-parser",
+  "name": "@buxlabs/ejs-lexer",
   "version": "1.0.0",
-  "description": "ejs parser",
+  "description": "ejs lexer",
   "main": "index.js",
   "scripts": {
-    "test": "node test/spec/basic.js"
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/buxlabs/ejs-parser.git"
+    "url": "git+https://github.com/buxlabs/ejs-lexer.git"
   },
   "keywords": [
     "ejs",
-    "parser"
+    "lexer"
   ],
   "author": "Emil Ajdyna <emil@ajdyna.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/buxlabs/ejs-parser/issues"
+    "url": "https://github.com/buxlabs/ejs-lexer/issues"
   },
-  "homepage": "https://github.com/buxlabs/ejs-parser#readme"
+  "homepage": "https://github.com/buxlabs/ejs-lexer#readme"
 }
