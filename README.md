@@ -1,1 +1,1 @@
-# ejs-parser
+# ejs-lexer
