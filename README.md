@@ -33,3 +33,8 @@ It translates a string into an array of tokens with type and value
 ```
 
 There are four types: `string`, `evaluate`, `escape` and `interpolate`. The value of the ejs specific types is trimmed.
+
+
+## License
+
+MIT
