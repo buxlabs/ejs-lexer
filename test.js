@@ -37,6 +37,14 @@ assert.deepEqual(lexer('<%= bar %>'), [
   { type: 'interpolate', value: 'bar' }
 ])
 
+assert.deepEqual(lexer('<%_ bar %>'), [
+  { type: 'slurp', value: 'bar' }
+])
+
+assert.deepEqual(lexer('<%# bar %>'), [
+  { type: 'comment', value: 'bar' }
+])
+
 assert.deepEqual(lexer('<%=bar%>'), [
   { type: 'interpolate', value: 'bar' }
 ])

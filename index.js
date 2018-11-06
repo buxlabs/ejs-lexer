@@ -3,6 +3,8 @@ const END_TAG = '>'
 const EMBEDDED_TEMPLATE = '%'
 const ESCAPE = '-'
 const INTERPOLATE = '='
+const SLURP = '_'
+const COMMENT = '#'
 
 module.exports = function lexer (input) {
   const tokens = []
@@ -36,6 +38,12 @@ module.exports = function lexer (input) {
         advance()
       } else if (current(INTERPOLATE)) {
         type = 'interpolate'
+        advance()
+      } else if (current(COMMENT)) {
+        type = 'comment'
+        advance()
+      } else if (current(SLURP)) {
+        type = 'slurp'
         advance()
       } else {
         type = 'evaluate'
