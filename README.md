@@ -1,5 +1,9 @@
 # ejs-lexer
 
+![npm (scoped)](https://img.shields.io/npm/v/@buxlabs/ejs-lexer.svg)
+
+> ejs lexer
+
 ## Installation
 
 ```
