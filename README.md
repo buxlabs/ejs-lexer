@@ -19,7 +19,7 @@ console.log(tokens)
 It translates a string into an array of tokens with type and value
 
 ```html
-<div><% foo %><%- bar %><%= baz %></div>
+<div><% foo %><%- bar %><%= baz %><%_ biz %><%# boss %></div>
 ```
 
 ```js
@@ -28,11 +28,13 @@ It translates a string into an array of tokens with type and value
   { type: 'evaluate', value: 'foo' },
   { type: 'escape', value: 'bar' },
   { type: 'interpolate', value: 'baz' },
+  { type: 'slurp', value: 'biz' },
+  { type: 'comment', value: 'boss' },
   { type: 'string', value: '</div>'}
 ]
 ```
 
-There are four types: `string`, `evaluate`, `escape` and `interpolate`. The value of the ejs specific types is trimmed.
+There are six types: `string`, `evaluate`, `escape`, `interpolate`, `slurp` and `comment`. The value of the ejs specific types is trimmed.
 
 
 ## License
