@@ -6,7 +6,7 @@ const INTERPOLATE = '='
 const SLURP = '_'
 const COMMENT = '#'
 
-module.exports = function lexer (input) {
+module.exports = function tokenize (input) {
   const tokens = []
   const length = input.length
   let index = 0
