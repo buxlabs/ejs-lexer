@@ -2,9 +2,15 @@ package main
 
 import "testing"
 
-func TestTokenize(test *testing.T) {
+func assertEqual(t *testing.T, a interface{}, b interface{}) {
+	if a != b {
+		t.Fatalf("%s != %s", a, b)
+	}
+}
+
+func TestTokenize(t *testing.T) {
     tokens := Tokenize("hello")
     token := tokens[0]
-    if token.Type != "string" { test.Errorf("FAIL") }
-    if token.Value != "hello" { test.Errorf("FAIL") }
+    assertEqual(t, token.Type, "string")
+    assertEqual(t, token.Value, "hello")
 }
